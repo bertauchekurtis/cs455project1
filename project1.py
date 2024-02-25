@@ -13,7 +13,7 @@ C_1_ALPHA = 30
 C_2_ALPHA = 2 * sqrt(C_1_ALPHA)
 C_MT_1 = 1.1
 C_MT_2 = 2 * sqrt(C_MT_1)
-Q_MT = (25, 25)
+Q_MT = (150, 150)
 EPSILON = 0.1
 H = 0.2
 A = B = 5
@@ -25,78 +25,122 @@ K = 1.2
 R = K * D
 DELTA_T = 0.009
 RANDOM_SEED = 17
+np.random.seed(17)
 
 def main():
 
+    ################################################################
+    # CASE 1 - ALGORITHM 1 - FRAGMENTATION
+    ################################################################
+
     # initialize nodes
-    np.random.seed(17)
     # nodePositions = np.random.randint(low = 0, high = 50, size = (DIMENSIONS, NUM_NODES))
     # nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
     # nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
-    # initalize holding of everything
-    # allPositions = nodePositions.copy()
-    # allNodeVelocities = nodeVelocities.copy()
-    # allNodeAccelerations = nodeAccelerations.copy()
+    # allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    # allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
 
-    camera = Camera(plt.figure(dpi = 300))
+    # plotNodesAndSave(nodePositions, "scatter/scatter_start.png")
 
-
-    # for i in range(0, 1000):
-    #     nodePositions, nodeVelocities, nodeAccelerations = updateAlgo1(nodePositions, nodeVelocities)
-    #     plotNodes(nodePositions)
-    #     camera.snap()
-    #     print("FINISHED ITERATION: ", i)
-
-    # anim = camera.animate(blit=True)
-    # anim.save('scatter.mp4')
-
-    # plotNodesAndSave(nodePositions, "start2.png")
     # for i in range(0, 500):
-    #     nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2(nodePositions, nodeVelocities)
-    #     plotNodes(nodePositions)
-    #     camera.snap()
+    #     nodePositions, nodeVelocities, nodeAccelerations = updateAlgo1(nodePositions, nodeVelocities)
+    #     if (i + 1) % 100 == 0:
+    #         plotNodesAndSave(nodePositions, "scatter/scatter" + str(i + 1) + ".png")
     #     print("FINISHED ITERATION: ", i)
-    # plotNodesAndSave(nodePositions, "end2.png")
-        
-    # anim = camera.animate(blit=True)
-    # anim.save("part2-close-more.mp4")
+    #     allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2)
+    #     allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
 
-    ##### ALGO 2 - CASE 2 - SINE WAVE #####
+    # plotNodesAndSave(nodePositions, "scatter/scatter_end.png")
+    # plotAndSaveNodeTrajectories(allPositions, "scatter/scatter_trajectory.png")
+    # plotAndSaveNodeVelocities(allNodeVelocities, "scatter/scatter_individual_velocity.png", "scatter/scatter_all_velcoity.png")
+    # plotAndSaveConnectivity(allPositions, "scatter/scatter_connectivity.png")
 
-    # nodePositions = np.random.randint(low = 0, high = 150, size = (DIMENSIONS, NUM_NODES))
+    ################################################################
+    # CASE 2 - ALGORITHM 2 - STATIC TARGET
+    ################################################################
+
+    # nodePositions = np.random.randint(low = 0, high = 50, size = (DIMENSIONS, NUM_NODES))
     # nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
     # nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
-    # allPositions = nodePositions.copy()
-    # allNodeVelocities = nodeVelocities.copy()
-    # allNodeAccelerations = nodeAccelerations.copy()
+    # allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    # allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
 
-
-    # gammaX = np.arange(500)
-    # gammaY = (np.sin(2 * np.pi * 2 * gammaX / 500) * 75) + 75
+    # plotNodesAndSave(nodePositions, "static/static_start.png")
 
     # for i in range(0, 500):
-    #     if i == 0:
-    #         nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), (0, 0))
-    #     else:
-    #         nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), ((gammaX[i] - gammaX[i - 1])/DELTA_T, (gammaY[i] - gammaY[i - 1])/DELTA_T))
-    #     plotNodes(nodePositions)
-    #     plt.plot(gammaX, gammaY)
-    #     plt.scatter(gammaX[i], gammaY[i],color = "red")
-    #     camera.snap()
+    #     nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2(nodePositions, nodeVelocities)
     #     print("FINISHED ITERATION: ", i)
-    # anim = camera.animate(blit = True)
-    # anim.save("part3.mp4")
+    #     if (i + 1) % 100 == 0:
+    #         plt.clf()
+    #         plotNodes(nodePositions)
+    #         plt.scatter(Q_MT[0], Q_MT[1], color = "red")
+    #         plt.savefig("static/static" + str(i + 1) + ".png")
+    #     allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2)
+    #     allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
 
-    ##### ALGO 2 - CASE 3 - CIRCLE #####
+    # plotNodesAndSave(nodePositions, "static/static_end.png")
+    # plotAndSaveNodeTrajectories(allPositions, "static/static_trajectory.png")
+    # plotAndSaveNodeVelocities(allNodeVelocities, "static/static_individual_velocity.png", "static/static_all_velcoity.png")
+    # plotAndSaveConnectivity(allPositions, "static/static_connectivity.png")
+
+    ################################################################
+    # CASE 3 - ALGORITHM 2 - SIN WAVE
+    ################################################################
 
     nodePositions = np.random.randint(low = 0, high = 150, size = (DIMENSIONS, NUM_NODES))
     nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
     nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
-    allPositions = nodePositions.copy()
-    allNodeVelocities = nodeVelocities.copy()
-    allNodeAccelerations = nodeAccelerations.copy()
+    allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    allXCenters = []
+    allYCenters = []
+    gammaX = np.arange(500)
+    gammaY = (np.sin(2 * np.pi * gammaX / 500) * 75) + 75
 
+    for i in range(0, 500):
+        if i == 0:
+            nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), (0, 0))
+        else:
+            nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), ((gammaX[i] - gammaX[i - 1])/DELTA_T, (gammaY[i] - gammaY[i - 1])/DELTA_T))
+            
+        allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2)
+        allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
 
+        thisXCenter = nodePositions[0, :].copy()
+        thisXCenter = np.sum(thisXCenter)
+        thisXCenter /= NUM_NODES
+        allXCenters.append(thisXCenter)
+        thisYCenter = nodePositions[1, :].copy()
+        thisYCenter = np.sum(thisYCenter)
+        thisYCenter /= NUM_NODES
+        allYCenters.append(thisYCenter)
+            
+
+        if ((i + 1) % 100 == 0) or (i == 0):
+            plt.clf()
+            plt.plot(gammaX, gammaY, color = "red", label = "Gamma Agent")
+            plt.plot(allXCenters, allYCenters, color = "black", label = "Center of Mass")
+            plotNodes(nodePositions)
+            plt.scatter(gammaX[i], gammaY[i], color = "green", zorder = 100, label = "Target")
+            plt.legend(bbox_to_anchor = (1, -0.3), borderaxespad = 0)
+            plt.title("Case 3: Sin Wave")
+            plt.savefig("sin/sin" + str(i + 1) + ".png")
+        print("FINISHED ITERATION: ", i)
+
+    plotAndSaveNodeTrajectories(allPositions, "sin/sin_trajectory.png")
+    plotAndSaveNodeVelocities(allNodeVelocities, "sin/sin_individual_velocity.png", "sin/sin_all_velcoity.png")
+    plotAndSaveConnectivity(allPositions, "sin/sin_connectivity.png")
+    plotCenterOfMassAndTarget(gammaX, gammaY, allPositions, "sin/center_of_mass.png")
+
+    ################################################################
+    # CASE 4 - ALGORITHM 2 - CIRCLE
+    ################################################################
+
+    nodePositions = np.random.randint(low = 0, high = 150, size = (DIMENSIONS, NUM_NODES))
+    nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
+    nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
+    allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
     thetaOne = np.linspace(1 * np.pi, 0, 250)
     thetaTwo = np.linspace(2 * np.pi, 1 * np.pi, 250)
     theta = np.append(thetaOne, thetaTwo)
@@ -105,23 +149,42 @@ def main():
     gammaX = gammaX + 250
     gammaY = radius * np.sin(theta)
     gammaY = gammaY + 150
+    allXCenters = []
+    allYCenters = []
 
     for i in range(0, 500):
         if i == 0:
             nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), (0, 0))
         else:
             nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), ((gammaX[i] - gammaX[i - 1])/DELTA_T, (gammaY[i] - gammaY[i - 1])/DELTA_T))
-        plotNodes(nodePositions)
-        plt.plot(gammaX, gammaY)
-        plt.scatter(gammaX[i], gammaY[i],color = "red")
-        camera.snap()
+            
+        allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2) 
+        allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
+
+        thisXCenter = nodePositions[0, :].copy()
+        thisXCenter = np.sum(thisXCenter)
+        thisXCenter /= NUM_NODES
+        allXCenters.append(thisXCenter)
+        thisYCenter = nodePositions[1, :].copy()
+        thisYCenter = np.sum(thisYCenter)
+        thisYCenter /= NUM_NODES
+        allYCenters.append(thisYCenter)
+
+        if ((i + 1) % 100 == 0) or (i == 0):
+            plt.clf()
+            plt.plot(gammaX, gammaY, color = "red", label = "Gamma Agent")
+            plt.plot(allXCenters, allYCenters, color = "black", label = "Center of Mass")
+            plotNodes(nodePositions)
+            plt.scatter(gammaX[i], gammaY[i], color = "green", zorder = 100, label = "Target")
+            plt.legend(bbox_to_anchor = (0.15, 0.1), loc = "upper right")
+            plt.title("Case 4: Circle")
+            plt.savefig("circle/circle" + str(i + 1) + ".png")
         print("FINISHED ITERATION: ", i)
-    anim = camera.animate(blit = True)
-    anim.save("part4.mp4")
 
-
-
-
+    plotAndSaveNodeTrajectories(allPositions, "circle/circle_trajectory.png")
+    plotAndSaveNodeVelocities(allNodeVelocities, "circle/circle_individual_velocity.png", "circle/circle_all_velcoity.png")
+    plotAndSaveConnectivity(allPositions, "circle/circle_connectivity.png")
+    plotCenterOfMassAndTarget(gammaX, gammaY, allPositions, "circle/center_of_mass.png")
 
 
 
@@ -139,6 +202,10 @@ def updateAlgo1(nodePositions, nodeVelocities):
         p_i = (nodeVelocities[0][i], nodeVelocities[1][i])
         for j in range(0, NUM_NODES):
             if i == j:
+                continue
+
+            thisPairNorm = euclidean_norm(tuple_diff((nodePositions[0][i], nodePositions[1][i]), (nodePositions[0][j], nodePositions[1][j])))
+            if thisPairNorm > R:
                 continue
 
             q_j = (nodePositions[0][j], nodePositions[1][j])
@@ -182,6 +249,9 @@ def updateAlgo2(nodePositions, nodeVelocities):
         for j in range(0, NUM_NODES):
             if i == j:
                 continue
+            thisPairNorm = euclidean_norm(tuple_diff((nodePositions[0][i], nodePositions[1][i]), (nodePositions[0][j], nodePositions[1][j])))
+            if thisPairNorm > R:
+                continue
 
             q_j = (nodePositions[0][j], nodePositions[1][j])
             p_j = (nodeVelocities[0][j], nodeVelocities[1][j])
@@ -210,20 +280,6 @@ def updateAlgo2(nodePositions, nodeVelocities):
         newVelocities[1][i] = nodeVelocities[1][i] + (newAccel[1] * DELTA_T) # y
         newPositions[0][i] = nodePositions[0][i] + (nodeVelocities[0][i] * DELTA_T) + ((1/2) * newAccel[0] * (DELTA_T * DELTA_T))
         newPositions[1][i] = nodePositions[1][i] + (nodeVelocities[1][i] * DELTA_T) + ((1/2) * newAccel[1] * (DELTA_T * DELTA_T))
-        if i == 98:
-            print("ACCEL", i, newAccel)
-            print("VELOCITY X", newVelocities[0][i])
-            print("VELCOITY Y", newVelocities[1][i])
-            print("POS: ", newPositions[0][i], newPositions[1][i], '\n')
-    
-    posSumX = 0
-    posSumY = 0
-    for i in range(0, NUM_NODES):
-        posSumX += newPositions[0][i]
-        posSumY += newPositions[1][i]
-    posSumX /= NUM_NODES
-    posSumY /= NUM_NODES
-    print("CENTER OF MASS: ", posSumX, posSumY)
 
     return newPositions, newVelocities, newAcclerations
 
@@ -241,6 +297,10 @@ def updateAlgo2DynamicTarget(nodePositions, nodeVelocities, gammaPos, gammaVeloc
         p_i = (nodeVelocities[0][i], nodeVelocities[1][i])
         for j in range(0, NUM_NODES):
             if i == j:
+                continue
+
+            thisPairNorm = euclidean_norm(tuple_diff((nodePositions[0][i], nodePositions[1][i]), (nodePositions[0][j], nodePositions[1][j])))
+            if thisPairNorm > R:
                 continue
 
             q_j = (nodePositions[0][j], nodePositions[1][j])
@@ -278,20 +338,6 @@ def updateAlgo2DynamicTarget(nodePositions, nodeVelocities, gammaPos, gammaVeloc
         newVelocities[1][i] = nodeVelocities[1][i] + (newAccel[1] * DELTA_T) # y
         newPositions[0][i] = nodePositions[0][i] + (nodeVelocities[0][i] * DELTA_T) + ((1/2) * newAccel[0] * (DELTA_T * DELTA_T))
         newPositions[1][i] = nodePositions[1][i] + (nodeVelocities[1][i] * DELTA_T) + ((1/2) * newAccel[1] * (DELTA_T * DELTA_T))
-        if i == 98:
-            print("ACCEL", i, newAccel)
-            print("VELOCITY X", newVelocities[0][i])
-            print("VELCOITY Y", newVelocities[1][i])
-            print("POS: ", newPositions[0][i], newPositions[1][i], '\n')
-    
-    posSumX = 0
-    posSumY = 0
-    for i in range(0, NUM_NODES):
-        posSumX += newPositions[0][i]
-        posSumY += newPositions[1][i]
-    posSumX /= NUM_NODES
-    posSumY /= NUM_NODES
-    print("CENTER OF MASS: ", posSumX, posSumY)
 
     return newPositions, newVelocities, newAcclerations
 
@@ -425,6 +471,78 @@ def plotNodes(nodePositions):
                 plt.plot([nodePositions[0][i], nodePositions[0][j]],[nodePositions[1][i], nodePositions[1][j]], color = "blue", linewidth = "0.5")
     plt.scatter(nodePositions[0], nodePositions[1], marker = ">", color = "magenta")
     plt.gcf().gca().set_aspect("equal")
+
+def plotAndSaveNodeTrajectories(allPositions, fileName):
+    plt.clf()
+    # shape[0] is x, y
+    # shape[1] is each node
+    # shape[2] is each time step
+    for i in range(0, allPositions.shape[1]):
+        thisNodeX = allPositions[0, i, :]
+        thisNodeY = allPositions[1, i, :]
+        plt.plot(thisNodeX, thisNodeY, color = "black")
+        plt.title("Node Trajectories")
+    plt.scatter(allPositions[0, :, allPositions.shape[2] - 1], allPositions[1, :, allPositions.shape[2] - 1], marker=">", color = "magenta")
+    plt.gcf().gca().set_aspect("equal")
+    plt.savefig(fileName)
+
+def plotAndSaveNodeVelocities(allVelocities, fileName, fileName2):
+    plt.clf()
+    for i in range(0, allVelocities.shape[1]):
+        thisNodeX = allVelocities[0, i, 1:]
+        thisNodeY = allVelocities[1, i, 1:]
+        mag = np.sqrt(np.add(np.power(thisNodeX, 2), np.power(thisNodeY, 2)))
+        plt.plot(mag)
+    plt.title("Node Velocities")
+    plt.savefig(fileName)
+
+    plt.clf()
+    x_vels = allVelocities[0, :, :]
+    x_sums = np.sum(x_vels, axis = 0)
+    x_sums = np.divide(x_sums, allVelocities.shape[1])
+    y_vels = allVelocities[1, :, :]
+    y_sums = np.sum(y_vels, axis = 0)
+    y_sums = np.divide(y_sums, allVelocities.shape[1])
+    avg_mag = np.sqrt(np.power(x_sums, 2) + np.power(y_sums, 2))
+    plt.plot(avg_mag)
+    plt.title("Average Velocity of All Nodes")
+    plt.savefig(fileName2)
+
+def plotAndSaveConnectivity(allPositions, fileName):
+    plt.clf()
+    # loop for every time point
+    connectivity = []
+    for i in range(0, allPositions.shape[2]):
+        emptyMatrix = np.zeros((allPositions.shape[1], allPositions.shape[1]))
+        # loop through every node to make the matrix
+        for j in range(0, allPositions.shape[1]):
+            for k in range(0, allPositions.shape[1]):
+                if j == k:
+                    continue
+                thisPairNorm = euclidean_norm(tuple_diff((allPositions[0][j][i], allPositions[1][j][i]), (allPositions[0][k][i], allPositions[1][k][i])))
+                if thisPairNorm < R:
+                    emptyMatrix[j][k] = 1
+
+        rank = np.linalg.matrix_rank(emptyMatrix)
+        connectivity.append((1 / NUM_NODES) * rank)
+    plt.plot(connectivity)
+    plt.title("Connectivity")
+    plt.savefig(fileName)
+
+def plotCenterOfMassAndTarget(targetX, targetY, nodePositions, filename):
+    plt.clf()
+    x_vels = nodePositions[0, :, :]
+    x_sums = np.sum(x_vels, axis = 0)
+    x_sums = np.divide(x_sums, nodePositions.shape[1])
+    y_vels = nodePositions[1, :, :]
+    y_sums = np.sum(y_vels, axis = 0)
+    y_sums = np.divide(y_sums, nodePositions.shape[1])
+    plt.plot(x_sums, y_sums, color = "black", label = "Center of Mass")
+    plt.plot(targetX, targetY, color = "red", label = "Gamma Agent")
+    plt.legend(loc = "lower left")
+    plt.title("Center of Mass vs. Gamma Agent")
+    plt.savefig(filename)
+
 
 if __name__ == "__main__":
     main()
