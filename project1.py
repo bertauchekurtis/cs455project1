@@ -5,9 +5,6 @@
 from math import sqrt, cos, pi
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FFMpegWriter
-from celluloid import Camera
-plt.rcParams['animation.ffmpeg_path'] = 'C:\\Users\\kurti\\Downloads\\ffmpeg-6.1.1-essentials_build\\ffmpeg-6.1.1-essentials_build\\bin\\ffmpeg.exe'
 
 C_1_ALPHA = 30
 C_2_ALPHA = 2 * sqrt(C_1_ALPHA)
@@ -33,55 +30,54 @@ def main():
     # CASE 1 - ALGORITHM 1 - FRAGMENTATION
     ################################################################
 
-    # initialize nodes
-    # nodePositions = np.random.randint(low = 0, high = 50, size = (DIMENSIONS, NUM_NODES))
-    # nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
-    # nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
-    # allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
-    # allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    nodePositions = np.random.randint(low = 0, high = 50, size = (DIMENSIONS, NUM_NODES))
+    nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
+    nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
+    allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
 
-    # plotNodesAndSave(nodePositions, "scatter/scatter_start.png")
+    plotNodesAndSave(nodePositions, "scatter/scatter_start.png")
 
-    # for i in range(0, 500):
-    #     nodePositions, nodeVelocities, nodeAccelerations = updateAlgo1(nodePositions, nodeVelocities)
-    #     if (i + 1) % 100 == 0:
-    #         plotNodesAndSave(nodePositions, "scatter/scatter" + str(i + 1) + ".png")
-    #     print("FINISHED ITERATION: ", i)
-    #     allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2)
-    #     allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
+    for i in range(0, 600):
+        nodePositions, nodeVelocities, nodeAccelerations = updateAlgo1(nodePositions, nodeVelocities)
+        if (i + 1) % 100 == 0:
+            plotNodesAndSave(nodePositions, "scatter/scatter" + str(i + 1) + ".png")
+        print("FINISHED ITERATION: ", i)
+        allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2)
+        allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
 
-    # plotNodesAndSave(nodePositions, "scatter/scatter_end.png")
-    # plotAndSaveNodeTrajectories(allPositions, "scatter/scatter_trajectory.png")
-    # plotAndSaveNodeVelocities(allNodeVelocities, "scatter/scatter_individual_velocity.png", "scatter/scatter_all_velcoity.png")
-    # plotAndSaveConnectivity(allPositions, "scatter/scatter_connectivity.png")
+    plotNodesAndSave(nodePositions, "scatter/scatter_end.png")
+    plotAndSaveNodeTrajectories(allPositions, "scatter/scatter_trajectory.png", "Fragmentation")
+    plotAndSaveNodeVelocities(allNodeVelocities, "scatter/scatter_individual_velocity.png", "scatter/scatter_all_velcoity.png", "Fragmentation")
+    plotAndSaveConnectivity(allPositions, "scatter/scatter_connectivity.png", "Fragmentation")
 
     ################################################################
     # CASE 2 - ALGORITHM 2 - STATIC TARGET
     ################################################################
 
-    # nodePositions = np.random.randint(low = 0, high = 50, size = (DIMENSIONS, NUM_NODES))
-    # nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
-    # nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
-    # allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
-    # allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    nodePositions = np.random.randint(low = 0, high = 50, size = (DIMENSIONS, NUM_NODES))
+    nodeVelocities = np.zeros((DIMENSIONS, NUM_NODES))
+    nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
+    allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
+    allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
 
-    # plotNodesAndSave(nodePositions, "static/static_start.png")
+    plotNodesAndSave(nodePositions, "static/static_start.png")
 
-    # for i in range(0, 500):
-    #     nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2(nodePositions, nodeVelocities)
-    #     print("FINISHED ITERATION: ", i)
-    #     if (i + 1) % 100 == 0:
-    #         plt.clf()
-    #         plotNodes(nodePositions)
-    #         plt.scatter(Q_MT[0], Q_MT[1], color = "red")
-    #         plt.savefig("static/static" + str(i + 1) + ".png")
-    #     allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2)
-    #     allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
+    for i in range(0, 600):
+        nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2(nodePositions, nodeVelocities)
+        print("FINISHED ITERATION: ", i)
+        if (i + 1) % 100 == 0:
+            plt.clf()
+            plotNodes(nodePositions)
+            plt.scatter(Q_MT[0], Q_MT[1], color = "red")
+            plt.savefig("static/static" + str(i + 1) + ".png")
+        allPositions = np.concatenate((allPositions, nodePositions.copy()[:, :, np.newaxis]), axis = 2)
+        allNodeVelocities = np.concatenate((allNodeVelocities, nodeVelocities.copy()[:, :, np.newaxis]), axis = 2)
 
-    # plotNodesAndSave(nodePositions, "static/static_end.png")
-    # plotAndSaveNodeTrajectories(allPositions, "static/static_trajectory.png")
-    # plotAndSaveNodeVelocities(allNodeVelocities, "static/static_individual_velocity.png", "static/static_all_velcoity.png")
-    # plotAndSaveConnectivity(allPositions, "static/static_connectivity.png")
+    plotNodesAndSave(nodePositions, "static/static_end.png")
+    plotAndSaveNodeTrajectories(allPositions, "static/static_trajectory.png", "Static Target")
+    plotAndSaveNodeVelocities(allNodeVelocities, "static/static_individual_velocity.png", "static/static_all_velcoity.png", "Static Target")
+    plotAndSaveConnectivity(allPositions, "static/static_connectivity.png", "Static Target")
 
     ################################################################
     # CASE 3 - ALGORITHM 2 - SIN WAVE
@@ -94,10 +90,10 @@ def main():
     allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
     allXCenters = []
     allYCenters = []
-    gammaX = np.arange(500)
-    gammaY = (np.sin(2 * np.pi * gammaX / 500) * 75) + 75
+    gammaX = np.arange(600)
+    gammaY = (np.sin(2 * np.pi * gammaX / 600) * 75) + 75
 
-    for i in range(0, 500):
+    for i in range(0, 600):
         if i == 0:
             nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), (0, 0))
         else:
@@ -127,10 +123,10 @@ def main():
             plt.savefig("sin/sin" + str(i + 1) + ".png")
         print("FINISHED ITERATION: ", i)
 
-    plotAndSaveNodeTrajectories(allPositions, "sin/sin_trajectory.png")
-    plotAndSaveNodeVelocities(allNodeVelocities, "sin/sin_individual_velocity.png", "sin/sin_all_velcoity.png")
-    plotAndSaveConnectivity(allPositions, "sin/sin_connectivity.png")
-    plotCenterOfMassAndTarget(gammaX, gammaY, allPositions, "sin/center_of_mass.png")
+    plotAndSaveNodeTrajectories(allPositions, "sin/sin_trajectory.png", "Sin Wave")
+    plotAndSaveNodeVelocities(allNodeVelocities, "sin/sin_individual_velocity.png", "sin/sin_all_velcoity.png", "Sin Wave")
+    plotAndSaveConnectivity(allPositions, "sin/sin_connectivity.png", "Sin Wave")
+    plotCenterOfMassAndTarget(gammaX, gammaY, allPositions, "sin/center_of_mass.png", "Sin Wave")
 
     ################################################################
     # CASE 4 - ALGORITHM 2 - CIRCLE
@@ -141,8 +137,8 @@ def main():
     nodeAccelerations = np.zeros((DIMENSIONS, NUM_NODES))
     allPositions = nodePositions.copy().reshape(DIMENSIONS, NUM_NODES, 1)
     allNodeVelocities = nodeVelocities.copy().reshape(DIMENSIONS, NUM_NODES, 1)
-    thetaOne = np.linspace(1 * np.pi, 0, 250)
-    thetaTwo = np.linspace(2 * np.pi, 1 * np.pi, 250)
+    thetaOne = np.linspace(1 * np.pi, 0, 300)
+    thetaTwo = np.linspace(2 * np.pi, 1 * np.pi, 300)
     theta = np.append(thetaOne, thetaTwo)
     radius = 150
     gammaX = radius * np.cos(theta)
@@ -152,7 +148,7 @@ def main():
     allXCenters = []
     allYCenters = []
 
-    for i in range(0, 500):
+    for i in range(0, 600):
         if i == 0:
             nodePositions, nodeVelocities, nodeAccelerations = updateAlgo2DynamicTarget(nodePositions, nodeVelocities, (gammaX[i], gammaY[i]), (0, 0))
         else:
@@ -181,10 +177,10 @@ def main():
             plt.savefig("circle/circle" + str(i + 1) + ".png")
         print("FINISHED ITERATION: ", i)
 
-    plotAndSaveNodeTrajectories(allPositions, "circle/circle_trajectory.png")
-    plotAndSaveNodeVelocities(allNodeVelocities, "circle/circle_individual_velocity.png", "circle/circle_all_velcoity.png")
-    plotAndSaveConnectivity(allPositions, "circle/circle_connectivity.png")
-    plotCenterOfMassAndTarget(gammaX, gammaY, allPositions, "circle/center_of_mass.png")
+    plotAndSaveNodeTrajectories(allPositions, "circle/circle_trajectory.png", "Circle")
+    plotAndSaveNodeVelocities(allNodeVelocities, "circle/circle_individual_velocity.png", "circle/circle_all_velcoity.png", "Circle")
+    plotAndSaveConnectivity(allPositions, "circle/circle_connectivity.png", "Circle")
+    plotCenterOfMassAndTarget(gammaX, gammaY, allPositions, "circle/center_of_mass.png", "Circle")
 
 
 
@@ -472,7 +468,7 @@ def plotNodes(nodePositions):
     plt.scatter(nodePositions[0], nodePositions[1], marker = ">", color = "magenta")
     plt.gcf().gca().set_aspect("equal")
 
-def plotAndSaveNodeTrajectories(allPositions, fileName):
+def plotAndSaveNodeTrajectories(allPositions, fileName, sim):
     plt.clf()
     # shape[0] is x, y
     # shape[1] is each node
@@ -481,34 +477,44 @@ def plotAndSaveNodeTrajectories(allPositions, fileName):
         thisNodeX = allPositions[0, i, :]
         thisNodeY = allPositions[1, i, :]
         plt.plot(thisNodeX, thisNodeY, color = "black")
-        plt.title("Node Trajectories")
+        plt.title("Node Trajectories - " + sim)
     plt.scatter(allPositions[0, :, allPositions.shape[2] - 1], allPositions[1, :, allPositions.shape[2] - 1], marker=">", color = "magenta")
     plt.gcf().gca().set_aspect("equal")
     plt.savefig(fileName)
 
-def plotAndSaveNodeVelocities(allVelocities, fileName, fileName2):
+def plotAndSaveNodeVelocities(allVelocities, fileName, fileName2, sim):
     plt.clf()
     for i in range(0, allVelocities.shape[1]):
         thisNodeX = allVelocities[0, i, 1:]
         thisNodeY = allVelocities[1, i, 1:]
         mag = np.sqrt(np.add(np.power(thisNodeX, 2), np.power(thisNodeY, 2)))
         plt.plot(mag)
-    plt.title("Node Velocities")
+    plt.title("Node Velocities - " + sim)
     plt.savefig(fileName)
 
     plt.clf()
-    x_vels = allVelocities[0, :, :]
-    x_sums = np.sum(x_vels, axis = 0)
-    x_sums = np.divide(x_sums, allVelocities.shape[1])
-    y_vels = allVelocities[1, :, :]
-    y_sums = np.sum(y_vels, axis = 0)
-    y_sums = np.divide(y_sums, allVelocities.shape[1])
-    avg_mag = np.sqrt(np.power(x_sums, 2) + np.power(y_sums, 2))
-    plt.plot(avg_mag)
-    plt.title("Average Velocity of All Nodes")
+    averageVelcocities = []
+    for i in range(0, allVelocities.shape[2]):
+        thisMag = 0
+        for j in range(0, allVelocities.shape[1]):
+            thisMag += sqrt((allVelocities[0, j, i] * allVelocities[0, j, i]) + (allVelocities[1, j, i] * allVelocities[1, j, i]))
+        thisMag /= allVelocities.shape[1]
+        averageVelcocities.append(thisMag)
+
+
+
+    # x_vels = allVelocities[0, :, :]
+    # x_sums = np.sum(x_vels, axis = 0)
+    # x_sums = np.divide(x_sums, allVelocities.shape[1])
+    # y_vels = allVelocities[1, :, :]
+    # y_sums = np.sum(y_vels, axis = 0)
+    # y_sums = np.divide(y_sums, allVelocities.shape[1])
+    # avg_mag = np.sqrt(np.power(x_sums, 2) + np.power(y_sums, 2))
+    plt.plot(averageVelcocities)
+    plt.title("Average Velocity of All Nodes - " + sim)
     plt.savefig(fileName2)
 
-def plotAndSaveConnectivity(allPositions, fileName):
+def plotAndSaveConnectivity(allPositions, fileName, sim):
     plt.clf()
     # loop for every time point
     connectivity = []
@@ -526,10 +532,10 @@ def plotAndSaveConnectivity(allPositions, fileName):
         rank = np.linalg.matrix_rank(emptyMatrix)
         connectivity.append((1 / NUM_NODES) * rank)
     plt.plot(connectivity)
-    plt.title("Connectivity")
+    plt.title("Connectivity - " + sim)
     plt.savefig(fileName)
 
-def plotCenterOfMassAndTarget(targetX, targetY, nodePositions, filename):
+def plotCenterOfMassAndTarget(targetX, targetY, nodePositions, filename, sim):
     plt.clf()
     x_vels = nodePositions[0, :, :]
     x_sums = np.sum(x_vels, axis = 0)
@@ -540,7 +546,7 @@ def plotCenterOfMassAndTarget(targetX, targetY, nodePositions, filename):
     plt.plot(x_sums, y_sums, color = "black", label = "Center of Mass")
     plt.plot(targetX, targetY, color = "red", label = "Gamma Agent")
     plt.legend(loc = "lower left")
-    plt.title("Center of Mass vs. Gamma Agent")
+    plt.title("Center of Mass vs. Gamma Agent - " + sim)
     plt.savefig(filename)
 
 
